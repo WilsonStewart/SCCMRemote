@@ -1,0 +1,251 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Utility.CommandLine.Arguments</name>
+    </assembly>
+    <members>
+        <member name="T:Utility.CommandLine.ArgumentsExtensions">
+            <summary>
+                Provides extension method(s) for the Argument namespace.
+            </summary>
+        </member>
+        <member name="M:Utility.CommandLine.ArgumentsExtensions.GetCallingType(System.String)">
+            <summary>
+                Gets the DeclaringType of the first method on the stack whose name matches the specified <paramref name="caller"/>.
+            </summary>
+            <param name="caller">The name of the calling method for which the DeclaringType is to be fetched.</param>
+            <returns>The DeclaringType of the first method on the stack whose name matches the specified <paramref name="caller"/>.</returns>
+        </member>
+        <member name="M:Utility.CommandLine.ArgumentsExtensions.TrimOuterQuotes(System.String)">
+            <summary>
+                Removes the outermost pair of enclosing quotes.
+            </summary>
+            <param name="value">The string to trim.</param>
+            <returns>The trimmed string.</returns>
+        </member>
+        <member name="T:Utility.CommandLine.ArgumentAttribute">
+            <summary>
+                Indicates that the property is to be used as a target for automatic population of values from command line arguments
+                when invoking the <see cref="M:Utility.CommandLine.Arguments.Populate(System.String,System.Boolean,System.String)"/> method.
+            </summary>
+        </member>
+        <member name="M:Utility.CommandLine.ArgumentAttribute.#ctor(System.Char,System.String,System.String)">
+            <summary>
+                Initializes a new instance of the <see cref="T:Utility.CommandLine.ArgumentAttribute"/> class.
+            </summary>
+            <param name="shortName">The short name of the argument, represented as a single character.</param>
+            <param name="longName">The long name of the argument.</param>
+            <param name="helpText">The help text of the argument.</param>
+        </member>
+        <member name="P:Utility.CommandLine.ArgumentAttribute.HelpText">
+            <summary>
+                Gets or sets the help text of the argument.
+            </summary>
+        </member>
+        <member name="P:Utility.CommandLine.ArgumentAttribute.LongName">
+            <summary>
+                Gets or sets the long name of the argument.
+            </summary>
+        </member>
+        <member name="P:Utility.CommandLine.ArgumentAttribute.ShortName">
+            <summary>
+                Gets or sets the short name of the argument.
+            </summary>
+        </member>
+        <member name="T:Utility.CommandLine.ArgumentInfo">
+            <summary>
+                Encapsulates argument names and help text.
+            </summary>
+        </member>
+        <member name="M:Utility.CommandLine.ArgumentInfo.#ctor(System.Char,System.String,System.String,System.Reflection.PropertyInfo)">
+            <summary>
+                Initializes a new instance of the <see cref="T:Utility.CommandLine.ArgumentInfo"/> class.
+            </summary>
+            <param name="shortName">The short name of the argument.</param>
+            <param name="longName">The long name of the argument.</param>
+            <param name="helpText">The help text for the argument.</param>
+            <param name="property">The property with which the argument is associated.</param>
+        </member>
+        <member name="P:Utility.CommandLine.ArgumentInfo.HelpText">
+            <summary>
+                Gets the help text for the argument.
+            </summary>
+        </member>
+        <member name="P:Utility.CommandLine.ArgumentInfo.IsCollection">
+            <summary>
+                Gets a value indicating whether the argument backing Type is a collection.
+            </summary>
+        </member>
+        <member name="P:Utility.CommandLine.ArgumentInfo.LongName">
+            <summary>
+                Gets the long name of the argument.
+            </summary>
+        </member>
+        <member name="P:Utility.CommandLine.ArgumentInfo.Property">
+            <summary>
+                Gets the property with which the argument is associated.
+            </summary>
+        </member>
+        <member name="P:Utility.CommandLine.ArgumentInfo.ShortName">
+            <summary>
+                Gets the short name of the argument.
+            </summary>
+        </member>
+        <member name="T:Utility.CommandLine.Arguments">
+            <summary>
+                Provides static methods used to retrieve the command line arguments and operands with which the application was
+                started, as well as a Type to contain them.
+            </summary>
+        </member>
+        <member name="F:Utility.CommandLine.Arguments.ArgumentRegExWithoutForwardSlash">
+            <summary>
+                The regular expression with which to parse the command line string.
+            </summary>
+        </member>
+        <member name="F:Utility.CommandLine.Arguments.ArgumentRegExWithForwardSlash">
+            <summary>
+                The regular expression with which to parse the command line string, including the ability to specify forward slashes.
+            </summary>
+        </member>
+        <member name="F:Utility.CommandLine.Arguments.GroupRegEx">
+            <summary>
+                The regular expression with which to parse argument-value groups.
+            </summary>
+        </member>
+        <member name="F:Utility.CommandLine.Arguments.OperandRegEx">
+            <summary>
+                The regular expression with which to parse strings strictly containing operands.
+            </summary>
+        </member>
+        <member name="F:Utility.CommandLine.Arguments.StrictOperandSplitRegEx">
+            <summary>
+                The regular expression with which to split the command line string explicitly among argument/value pairs and
+                operands, and strictly operands.
+            </summary>
+            <remarks>
+                This regular expression effectively splits a string into two parts; the part before the first "--", and the part
+                after. Instances of "--" not surrounded by a word boundary and those enclosed in quotes are ignored.
+            </remarks>
+        </member>
+        <member name="P:Utility.CommandLine.Arguments.EnableForwardSlash">
+            <summary>
+                Gets or sets a value indicating whether forward slashes are processed as argument delimiters.
+            </summary>
+        </member>
+        <member name="P:Utility.CommandLine.Arguments.ArgumentDictionary">
+            <summary>
+                Gets a dictionary containing the arguments and values specified in the command line arguments with which the
+                application was started.
+            </summary>
+            <remarks>
+                This dictionary contains argument key/value pairs compiled from the <see cref="P:Utility.CommandLine.Arguments.ArgumentList"/> and checked against
+                the <see cref="P:Utility.CommandLine.Arguments.TargetType"/> to combine duplicated pairs into lists where the backing property is a collection, and
+                to overwrite where the backing property is not a collection.
+            </remarks>
+        </member>
+        <member name="P:Utility.CommandLine.Arguments.ArgumentList">
+            <summary>
+                Gets the list of arguments specified in the command line arguments with which the application was started.
+            </summary>
+            <remarks>
+                This list contains each argument key/value pair as supplied in the original string, preserving the original order
+                and any duplicated pairs.
+            </remarks>
+        </member>
+        <member name="P:Utility.CommandLine.Arguments.CommandLineString">
+            <summary>
+                Gets the command line string from which the arguments were parsed.
+            </summary>
+        </member>
+        <member name="P:Utility.CommandLine.Arguments.OperandList">
+            <summary>
+                Gets a list containing the operands specified in the command line arguments with which the application was started.
+            </summary>
+        </member>
+        <member name="P:Utility.CommandLine.Arguments.TargetType">
+            <summary>
+                Gets the target Type, if applicable.
+            </summary>
+        </member>
+        <member name="P:Utility.CommandLine.Arguments.Item(System.Int32)">
+            <summary>
+                Gets the argument value corresponding to the specified <paramref name="index"/>.
+            </summary>
+            <param name="index">The index for which the value is to be retrieved.</param>
+            <returns>The argument value corresponding to the specified index.</returns>
+        </member>
+        <member name="P:Utility.CommandLine.Arguments.Item(System.String)">
+            <summary>
+                Gets the argument value corresponding to the specified <paramref name="key"/> from the
+                <see cref="P:Utility.CommandLine.Arguments.ArgumentDictionary"/> property.
+            </summary>
+            <param name="key">The key for which the value is to be retrieved.</param>
+            <returns>The argument value corresponding to the specified key.</returns>
+        </member>
+        <member name="M:Utility.CommandLine.Arguments.GetArgumentInfo(System.Type,System.String)">
+            <summary>
+                Retrieves a collection of <see cref="T:Utility.CommandLine.ArgumentInfo"/> gathered from properties in the target <paramref name="type"/>
+                marked with the <see cref="T:Utility.CommandLine.ArgumentAttribute"/><see cref="T:System.Attribute"/> along with the short and long names and help text.
+            </summary>
+            <param name="type">The <see cref="T:System.Type"/> for which the matching properties are to be retrieived.</param>
+            <param name="caller">Internal parameter used to identify the calling method.</param>
+            <returns>The retrieved collection of <see cref="T:Utility.CommandLine.ArgumentInfo"/>.</returns>
+        </member>
+        <member name="M:Utility.CommandLine.Arguments.Parse(System.String,System.Type,System.String)">
+            <summary>
+                Returns a dictionary containing the values specified in the command line arguments with which the application was
+                started, keyed by argument name.
+            </summary>
+            <param name="commandLineString">The command line arguments with which the application was started.</param>
+            <param name="type">The <see cref="T:System.Type"/> for which the command line string is to be parsed.</param>
+            <param name="caller">Internal parameter used to identify the calling method.</param>
+            <returns>
+                The dictionary containing the arguments and values specified in the command line arguments with which the
+                application was started.
+            </returns>
+        </member>
+        <member name="M:Utility.CommandLine.Arguments.Populate(System.String,System.Boolean,System.String)">
+            <summary>
+                Populates the properties in the invoking class marked with the
+                <see cref="T:Utility.CommandLine.ArgumentAttribute"/><see cref="T:System.Attribute"/> with the values specified in the list of command line
+                arguments, if present.
+            </summary>
+            <param name="commandLineString">The command line arguments with which the application was started.</param>
+            <param name="clearExistingValues">Whether to clear the properties before populating them. Defaults to true.</param>
+            <param name="caller">Internal parameter used to identify the calling method.</param>
+        </member>
+        <member name="M:Utility.CommandLine.Arguments.Populate(System.Type,System.String,System.Boolean)">
+            <summary>
+                Populates the properties in the specified Type marked with the
+                <see cref="T:Utility.CommandLine.ArgumentAttribute"/><see cref="T:System.Attribute"/> with the values specified in the list of command line
+                arguments, if present.
+            </summary>
+            <param name="type">
+                The Type for which the static properties matching the list of command line arguments are to be populated.
+            </param>
+            <param name="commandLineString">The command line arguments with which the application was started.</param>
+            <param name="clearExistingValues">Whether to clear the properties before populating them. Defaults to true.</param>
+        </member>
+        <member name="M:Utility.CommandLine.Arguments.Populate(System.Type,Utility.CommandLine.Arguments,System.Boolean)">
+            <summary>
+                Populates the properties in the specified Type marked with the
+                <see cref="T:Utility.CommandLine.ArgumentAttribute"/><see cref="T:System.Attribute"/> with the values specified in the specified argument
+                dictionary, if present. All property values are set to null at the start of the routine.
+            </summary>
+            <param name="type">
+                The Type for which the static properties matching the list of command line arguments are to be populated.
+            </param>
+            <param name="arguments">
+                The Arguments object containing the dictionary containing the argument-value pairs with which the destination
+                properties should be populated and the list of operands.
+            </param>
+            <param name="clearExistingValues">Whether to clear the properties before populating them. Defaults to true.</param>
+        </member>
+        <member name="T:Utility.CommandLine.OperandsAttribute">
+            <summary>
+                Indicates that the property is to be used as the target for automatic population of command line operands when invoking
+                the <see cref="M:Utility.CommandLine.Arguments.Populate(System.String,System.Boolean,System.String)"/> method.
+            </summary>
+        </member>
+    </members>
+</doc>
